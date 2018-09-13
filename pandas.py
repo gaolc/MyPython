@@ -22,7 +22,7 @@ sheet = pd.read_excel('test.xlsx',sheetname= 'Sheet3')
 
 import openpyxl
 import datatime
-from  openpyxl import Workbook
+import re
 wb=openpyxl.load_workbook('example.xlsx')
 #active : 获取活跃的Worksheet
 #read_only : 是否只读模式打开Excel文档
@@ -58,7 +58,7 @@ now=time.strftime("%Y-%m-%d %X",time.localtime())[0:10]
 
 def get_update_models(linecontent):
     for i in linecontent:
-         
+         pass
 
 
 
@@ -74,5 +74,8 @@ current_line=get_current_num(release_filename)
 ff=open(release_filename,'r', encoding='UTF-8')
 conent=ff.readlines()[current_line+1:]
 
+for i in conent:
 
+i="2224         33"
+t=re.split(r" +\t+\n+",i)
 
