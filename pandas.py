@@ -1,43 +1,44 @@
 import numpy as np
 import pandas as pd
  
-#sheetnameï¼šé»˜è®¤æ˜¯sheetnameä¸º0ï¼Œè¿”å›å¤šè¡¨ä½¿ç”¨sheetname=[0,1]ï¼Œè‹¥sheetname=Noneæ˜¯è¿”å›å…¨è¡¨ ã€‚
-#æ³¨æ„ï¼šint/stringè¿”å›çš„æ˜¯dataframeï¼Œè€Œnoneå’Œlistè¿”å›çš„æ˜¯dict of dataframeã€‚
+#sheetname£ºÄ¬ÈÏÊÇsheetnameÎª0£¬·µ»Ø¶à±íÊ¹ÓÃsheetname=[0,1]£¬Èôsheetname=NoneÊÇ·µ»ØÈ«±í ¡£
+#×¢Òâ£ºint/string·µ»ØµÄÊÇdataframe£¬¶ønoneºÍlist·µ»ØµÄÊÇdict of dataframe¡£
 sheet = pd.read_excel('test.xlsx',sheetname= [0,1])
 sheet = pd.read_excel('test.xlsx',sheetname= [0,3])
 
 
-#é€šè¿‡è¡¨å
+#Í¨¹ı±íÃû
 sheet = pd.read_excel('test.xlsx',sheetname= 'Sheet3')
 
-#é€šè¿‡è¡¨çš„ä½ç½®
+#Í¨¹ı±íµÄÎ»ÖÃ
 sheet = pd.read_excel('test.xlsx',sheetname= 1)
 
-#é»˜è®¤ç¬¬ä¸€è¡Œæ•°æ®ä½œä¸ºåˆ—å,
-#header ï¼šæŒ‡å®šä½œä¸ºåˆ—åçš„è¡Œï¼Œé»˜è®¤0ï¼Œå³å–ç¬¬ä¸€è¡Œï¼Œæ•°æ®ä¸ºåˆ—åè¡Œä»¥ä¸‹çš„æ•°æ®ï¼›è‹¥æ•°æ®ä¸å«åˆ—åï¼Œåˆ™è®¾å®š header = Noneï¼›
+#Ä¬ÈÏµÚÒ»ĞĞÊı¾İ×÷ÎªÁĞÃû,
+#header £ºÖ¸¶¨×÷ÎªÁĞÃûµÄĞĞ£¬Ä¬ÈÏ0£¬¼´È¡µÚÒ»ĞĞ£¬Êı¾İÎªÁĞÃûĞĞÒÔÏÂµÄÊı¾İ£»ÈôÊı¾İ²»º¬ÁĞÃû£¬ÔòÉè¶¨ header = None£»
 sheet = pd.read_excel('test.xlsx',sheetname= 2,header=0)
 
 sheet = pd.read_excel('test.xlsx',sheetname= 'Sheet3')
 
 
 import openpyxl
-import datatime
+import datetime
 import re
+wb=openpyxl.load_workbook('component4.xlsx')
 wb=openpyxl.load_workbook('example.xlsx')
-#active : è·å–æ´»è·ƒçš„Worksheet
-#read_only : æ˜¯å¦åªè¯»æ¨¡å¼æ‰“å¼€Excelæ–‡æ¡£
-#encoding : æ–‡æ¡£çš„å­—ç¬¦ç¼–ç 
-#properties : æ–‡æ¡£çš„å…ƒæ•°æ®ï¼Œå¦‚æ ‡é¢˜ï¼Œåˆ›å»ºè€…ï¼Œåˆ›å»ºæ—¥æœŸç­‰
-#worksheets : ä»¥åˆ—è¡¨çš„å½¢å¼è¿”å›æ‰€æœ‰çš„sheet
+#active : »ñÈ¡»îÔ¾µÄWorksheet
+#read_only : ÊÇ·ñÖ»¶ÁÄ£Ê½´ò¿ªExcelÎÄµµ
+#encoding : ÎÄµµµÄ×Ö·û±àÂë
+#properties : ÎÄµµµÄÔªÊı¾İ£¬Èç±êÌâ£¬´´½¨Õß£¬´´½¨ÈÕÆÚµÈ
+#worksheets : ÒÔÁĞ±íµÄĞÎÊ½·µ»ØËùÓĞµÄsheet
 sheet_master2 = wb.worksheets[1]
 sheet_master2['B1']
-#è·å–sheet_master B1 çš„å€¼
+#»ñÈ¡sheet_master B1 µÄÖµ
 B1=sheet_master2['B1'].value
 sheet_master2['C1']=datetime.datetime.now()
 wb.save('example.xlsx')
 
 import linecache
-count=len(open('191-ç‰ˆæœ¬å‘å¸ƒ.txt','r', encoding='UTF-8').readlines())
+count=len(open('191-°æ±¾·¢²¼.txt','r', encoding='UTF-8').readlines())
 
 for i in range(count-1):
     fst_line=linecache.getline('myout',i)
@@ -48,10 +49,10 @@ for i in range(count-1):
 
 a = datetime.datetime.now()
 print a                                  
-## aå˜é‡ä¸æŒ‡å‘ä¸€ä¸ªå­—ç¬¦ä¸²å¯¹è±¡ï¼Œè€Œæ˜¯æŒ‡å‘ä¸€ä¸ªdatetime.datetimeç±»å‹çš„å¯¹è±¡    
+## a±äÁ¿²»Ö¸ÏòÒ»¸ö×Ö·û´®¶ÔÏó£¬¶øÊÇÖ¸ÏòÒ»¸ödatetime.datetimeÀàĞÍµÄ¶ÔÏó    
 import datetime
 import time
-release_filename='191-ç‰ˆæœ¬å‘å¸ƒ.txt'
+release_filename='191-°æ±¾·¢²¼.txt'
 current_line=""
 models_dir={}
 now=time.strftime("%Y-%m-%d %X",time.localtime())[0:10]
@@ -78,4 +79,3 @@ for i in conent:
 
 i="2224         33"
 t=re.split(r" +\t+\n+",i)
-
