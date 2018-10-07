@@ -6,7 +6,7 @@ import re
 import time
 #定义变量
 current_vcomp='component4.xlsx'
-release_filename='191-版本发布.txt'
+release_filename='191版本发布.txt'
 current_line=""
 models_dir={}
 now=time.strftime("%Y%m%d %X",time.localtime())[0:8]
