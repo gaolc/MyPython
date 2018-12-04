@@ -1,7 +1,0 @@
-Filesystem     Type     Inodes  IUsed   IFree IUse% Mounted on
-/dev/sda2      ext4     640848 203604  437244   32% /
-tmpfs          tmpfs    127490      1  127489    1% /dev/shm
-/dev/sda1      ext4     128016     44  127972    1% /boot
-/dev/sda5      ext4     511056   3074  507982    1% /var
-/dev/sr0       iso9660       0      0       0     - /mnt/cdrom
-/dev/sdb1      ext4    1310720     10 1310710    1% /root/home
