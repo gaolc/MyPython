@@ -1,0 +1,177 @@
+2018-03-08 22:49:13 INFO : ##################################################
+2018-03-08 22:49:13 INFO : This program is running ...
+2018-03-08 22:49:13 INFO : OS is Windows
+2018-03-08 22:49:13 INFO : Python Version is 2.7.14
+2018-03-08 22:49:13 INFO : This time has ['data/CMDSAdapter.log'] files!
+2018-03-08 22:49:13 INFO : Starting parse [data/CMDSAdapter.log]...
+2018-03-08 22:49:14 INFO : [data/CMDSAdapter.log] max line num: 700022
+2018-03-08 22:49:19 INFO : This all time spent 5 seconds!                     
+2018-03-08 22:49:19 INFO : End ,thanks !
+2018-03-08 22:50:40 INFO : ##################################################
+2018-03-08 22:50:40 INFO : This program is running ...
+2018-03-08 22:50:40 INFO : OS is Windows
+2018-03-08 22:50:40 INFO : Python Version is 2.7.14
+2018-03-08 22:50:40 INFO : found 'result/CMDS_analysis.csv' file, will delete it
+2018-03-08 22:50:40 INFO : This time has ['data/CMDSAdapter.log'] files!
+2018-03-08 22:50:40 INFO : Starting parse [data/CMDSAdapter.log]...
+2018-03-08 22:50:41 INFO : [data/CMDSAdapter.log] max line num: 700022
+2018-03-08 22:50:45 INFO : None
+2018-03-08 22:50:45 INFO : This all time spent 4 seconds!                     
+2018-03-08 22:50:45 INFO : End ,thanks !
+2018-03-08 23:18:05 INFO : ##################################################
+2018-03-08 23:18:05 INFO : This program is running ...
+2018-03-08 23:18:05 INFO : OS is Windows
+2018-03-08 23:18:05 INFO : Python Version is 2.7.14
+2018-03-08 23:18:05 INFO : found 'result/CMDS_analysis.csv' file, will delete it
+2018-03-08 23:18:05 INFO : This time has ['data/CMDSAdapter.log'] files!
+2018-03-08 23:18:05 INFO : Starting parse [data/CMDSAdapter.log]...
+2018-03-08 23:18:06 INFO : [data/CMDSAdapter.log] max line num: 700022
+2018-03-08 23:18:10 DEBUG : [>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>]100.00%
+
+2018-03-08 23:18:10 INFO : This all time spent 4 seconds!                     
+2018-03-08 23:18:10 INFO : End ,thanks !
+2018-03-08 23:19:37 INFO : ##################################################
+2018-03-08 23:19:37 INFO : This program is running ...
+2018-03-08 23:19:37 INFO : OS is Windows
+2018-03-08 23:19:37 INFO : Python Version is 2.7.14
+2018-03-08 23:19:37 INFO : found 'result/CMDS_analysis.csv' file, will delete it
+2018-03-08 23:19:37 INFO : This time has ['data/CMDSAdapter.log'] files!
+2018-03-08 23:19:37 INFO : Starting parse [data/CMDSAdapter.log]...
+2018-03-08 23:19:38 INFO : [data/CMDSAdapter.log] max line num: 700022
+2018-03-08 23:19:42 DEBUG : [>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>]100.00%
+
+2018-03-08 23:19:42 INFO : Done, result file has been generated at ./result/CMDS_analysis.csv
+2018-03-08 23:19:42 INFO : This all time spent 4 seconds!                     
+2018-03-08 23:19:42 INFO : End ,thanks !
+2018-03-08 23:21:31 INFO : ##################################################
+2018-03-08 23:21:31 INFO : This program is running ...
+2018-03-08 23:21:31 INFO : OS is Windows
+2018-03-08 23:21:31 INFO : Python Version is 2.7.14
+2018-03-08 23:21:31 INFO : found 'result/CMDS_analysis.csv' file, will delete it
+2018-03-08 23:21:31 INFO : This time has ['data/CMDSAdapter.log'] files!
+2018-03-08 23:21:31 INFO : Starting parse [data/CMDSAdapter.log]...
+2018-03-08 23:21:32 INFO : [data/CMDSAdapter.log] max line num: 700022
+2018-03-08 23:21:36 DEBUG : [>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>]100.00%
+
+2018-03-08 23:21:36 INFO : Done, result file has been generated at ./result/CMDS_analysis.csv
+2018-03-08 23:21:36 INFO : This all time spent 4 seconds!                     
+2018-03-08 23:21:36 INFO : End ,thanks !
+2018-03-08 23:24:00 INFO : ##################################################
+2018-03-08 23:24:00 INFO : This program is running ...
+2018-03-08 23:24:00 INFO : OS is Windows
+2018-03-08 23:24:00 INFO : Python Version is 2.7.14
+2018-03-08 23:24:00 INFO : found 'result/CMDS_analysis.csv' file, will delete it
+2018-03-08 23:24:00 INFO : This time has ['data/CMDSAdapter.log'] files!
+2018-03-08 23:24:00 INFO : Starting parse [data/CMDSAdapter.log]...
+2018-03-08 23:24:01 INFO : [data/CMDSAdapter.log] max line num: 700022
+2018-03-08 23:24:05 DEBUG : [>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>]100.00%
+2018-03-08 23:24:05 INFO : Done, result file has been generated at ./result/CMDS_analysis.csv
+2018-03-08 23:24:05 INFO : This all time spent 4 seconds!                     
+2018-03-08 23:24:05 INFO : End ,thanks !
+2018-06-23 08:16:56 INFO : ##################################################
+2018-06-23 08:16:56 INFO : This program is running ...
+2018-06-23 08:16:56 INFO : OS is Windows
+2018-06-23 08:16:56 INFO : Python Version is 2.7.14
+2018-06-23 08:16:56 INFO : found 'result/CMDS_analysis.csv' file, will delete it
+2018-06-23 08:16:56 INFO : This time has ['data/CMDSAdapter.log'] files!
+2018-06-23 08:16:56 INFO : Starting parse [data/CMDSAdapter.log]...
+2018-06-23 08:16:58 INFO : [data/CMDSAdapter.log] max line num: 700022
+2018-06-23 08:17:02 DEBUG : [>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>]100.00%
+2018-06-23 08:17:02 INFO : Done, result file has been generated at ./result/CMDS_analysis.csv
+2018-06-23 08:17:02 INFO : This all time spent 4 seconds!                     
+2018-06-23 08:17:02 INFO : End ,thanks !
+2018-06-23 08:17:27 INFO : ##################################################
+2018-06-23 08:17:27 INFO : This program is running ...
+2018-06-23 08:17:27 INFO : OS is Windows
+2018-06-23 08:17:27 INFO : Python Version is 2.7.14
+2018-06-23 08:17:27 INFO : This time has ['data/CMDSAdapter.log'] files!
+2018-06-23 08:17:27 INFO : Starting parse [data/CMDSAdapter.log]...
+2018-06-23 08:17:28 INFO : [data/CMDSAdapter.log] max line num: 700022
+2018-06-23 08:17:32 DEBUG : [>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>]100.00%
+2018-06-23 08:17:32 INFO : Done, result file has been generated at ./result/CMDS_analysis.csv
+2018-06-23 08:17:32 INFO : This all time spent 4 seconds!                     
+2018-06-23 08:17:32 INFO : End ,thanks !
+2018-06-24 21:01:20 INFO : ##################################################
+2018-06-24 21:01:20 INFO : This program is running ...
+2018-06-24 21:01:20 INFO : OS is Windows
+2018-06-24 21:01:20 INFO : Python Version is 2.7.14
+2018-06-24 21:01:20 INFO : found 'result/CMDS_analysis.csv' file, will delete it
+2018-06-24 21:01:20 INFO : This time has ['data/CMDSAdapter.log'] files!
+2018-06-24 21:01:20 INFO : Starting parse [data/CMDSAdapter.log]...
+2018-06-24 21:01:21 INFO : [data/CMDSAdapter.log] max line num: 700022
+2018-06-24 21:01:25 DEBUG : [>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>]100.00%
+2018-06-24 21:01:25 INFO : Done, result file has been generated at ./result/CMDS_analysis.csv
+2018-06-24 21:01:25 INFO : This all time spent 4 seconds!                     
+2018-06-24 21:01:25 INFO : End ,thanks !
+2018-06-24 21:02:38 INFO : ##################################################
+2018-06-24 21:02:38 INFO : This program is running ...
+2018-06-24 21:02:38 INFO : OS is Windows
+2018-06-24 21:02:38 INFO : Python Version is 2.7.14
+2018-06-24 21:02:38 INFO : found 'result/CMDS_analysis.csv' file, will delete it
+2018-06-24 21:02:38 INFO : This time has ['data/CMDSAdapter.log'] files!
+2018-06-24 21:02:38 INFO : Starting parse [data/CMDSAdapter.log]...
+2018-06-24 21:02:39 INFO : [data/CMDSAdapter.log] max line num: 700022
+2018-06-24 21:02:42 DEBUG : [>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>]100.00%
+2018-06-24 21:02:42 INFO : Done, result file has been generated at ./result/CMDS_analysis.csv
+2018-06-24 21:02:42 INFO : This all time spent 3 seconds!                     
+2018-06-24 21:02:42 INFO : End ,thanks !
+2018-06-24 21:04:28 INFO : ##################################################
+2018-06-24 21:04:28 INFO : This program is running ...
+2018-06-24 21:04:28 INFO : OS is Windows
+2018-06-24 21:04:28 INFO : Python Version is 3.6.5
+2018-06-24 21:04:28 INFO : found 'result/CMDS_analysis.csv' file, will delete it
+2018-06-24 21:04:28 INFO : This time has ['data/CMDSAdapter.log'] files!
+2018-06-24 21:04:28 INFO : Starting parse [data/CMDSAdapter.log]...
+2018-06-24 21:04:30 INFO : [data/CMDSAdapter.log] max line num: 700022
+2018-06-24 21:04:35 DEBUG : [>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>]100.00%
+2018-06-24 21:04:35 INFO : Done, result file has been generated at ./result/CMDS_analysis.csv
+2018-06-24 21:04:35 INFO : This all time spent 5 seconds!                     
+2018-06-24 21:04:35 INFO : End ,thanks !
+2018-06-24 21:05:05 INFO : ##################################################
+2018-06-24 21:05:05 INFO : This program is running ...
+2018-06-24 21:05:05 INFO : OS is Windows
+2018-06-24 21:05:05 INFO : Python Version is 3.6.5
+2018-06-24 21:05:05 INFO : found 'result/CMDS_analysis.csv' file, will delete it
+2018-06-24 21:05:05 INFO : This time has ['data/CMDSAdapter.log'] files!
+2018-06-24 21:05:05 INFO : Starting parse [data/CMDSAdapter.log]...
+2018-06-24 21:05:07 INFO : [data/CMDSAdapter.log] max line num: 700022
+2018-06-24 21:05:13 DEBUG : [>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>]100.00%
+2018-06-24 21:05:13 INFO : Done, result file has been generated at ./result/CMDS_analysis.csv
+2018-06-24 21:05:13 INFO : This all time spent 6 seconds!                     
+2018-06-24 21:05:13 INFO : End ,thanks !
+2018-06-24 21:05:18 INFO : ##################################################
+2018-06-24 21:05:18 INFO : This program is running ...
+2018-06-24 21:05:18 INFO : OS is Windows
+2018-06-24 21:05:18 INFO : Python Version is 3.6.5
+2018-06-24 21:05:18 INFO : found 'result/CMDS_analysis.csv' file, will delete it
+2018-06-24 21:05:18 INFO : This time has ['data/CMDSAdapter.log'] files!
+2018-06-24 21:05:18 INFO : Starting parse [data/CMDSAdapter.log]...
+2018-06-24 21:05:20 INFO : [data/CMDSAdapter.log] max line num: 700022
+2018-06-24 21:05:25 DEBUG : [>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>]100.00%
+2018-06-24 21:05:25 INFO : Done, result file has been generated at ./result/CMDS_analysis.csv
+2018-06-24 21:05:25 INFO : This all time spent 5 seconds!                     
+2018-06-24 21:05:25 INFO : End ,thanks !
+2018-06-24 21:05:28 INFO : ##################################################
+2018-06-24 21:05:28 INFO : This program is running ...
+2018-06-24 21:05:28 INFO : OS is Windows
+2018-06-24 21:05:28 INFO : Python Version is 3.6.5
+2018-06-24 21:05:28 INFO : found 'result/CMDS_analysis.csv' file, will delete it
+2018-06-24 21:05:28 INFO : This time has ['data/CMDSAdapter.log'] files!
+2018-06-24 21:05:28 INFO : Starting parse [data/CMDSAdapter.log]...
+2018-06-24 21:05:30 INFO : [data/CMDSAdapter.log] max line num: 700022
+2018-06-24 21:05:35 DEBUG : [>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>]100.00%
+2018-06-24 21:05:35 INFO : Done, result file has been generated at ./result/CMDS_analysis.csv
+2018-06-24 21:05:35 INFO : This all time spent 5 seconds!                     
+2018-06-24 21:05:35 INFO : End ,thanks !
+2018-07-23 20:42:02 INFO : ##################################################
+2018-07-23 20:42:02 INFO : This program is running ...
+2018-07-23 20:42:02 INFO : OS is Windows
+2018-07-23 20:42:02 INFO : Python Version is 2.7.14
+2018-07-23 20:42:02 INFO : found 'result/CMDS_analysis.csv' file, will delete it
+2018-07-23 20:42:02 INFO : This time has ['data/CMDSAdapter.log'] files!
+2018-07-23 20:42:02 INFO : Starting parse [data/CMDSAdapter.log]...
+2018-07-23 20:42:03 INFO : [data/CMDSAdapter.log] max line num: 700022
+2018-07-23 20:42:08 DEBUG : [>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>]100.00%
+2018-07-23 20:42:08 INFO : Done, result file has been generated at ./result/CMDS_analysis.csv
+2018-07-23 20:42:08 INFO : This all time spent 5 seconds!                     
+2018-07-23 20:42:08 INFO : End ,thanks !
