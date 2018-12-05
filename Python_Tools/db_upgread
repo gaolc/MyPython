@@ -1,0 +1,365 @@
+#!/bin/bash
+NLS_LANG=AMERICAN_AMERICA.AL32UTF8
+export NLS_LANG
+source /etc/profile
+source ~/.bash_profile
+
+debug(){
+        echo $*
+        echo $* >> /home/fxmss/scripts/log/fxmss_db_upgrade.log
+}
+
+
+debug "`date '+%Y-%m-%d %H:%M:%S'` Task Begin--Update."
+debug "";
+if [ ! -f /home/fxmss/tmp/fxmss_database/VERSION_NEW.txt ];then
+    debug "/home/fxmss/tmp/fxmss_database/VERSION_NEW.txt does not exist!"
+    exit 1
+else
+    VERSION_NEW=$(cat /home/fxmss/tmp/fxmss_database/VERSION_NEW.txt)
+	
+fi 
+
+if [ ! -f /home/fxmss/tmp/fxmss_database/full_update_flag.txt ];then
+    debug "/home/fxmss/tmp/fxmss_database/full_update_flag.txt does not exist!"
+    exit 1
+else
+    full_update_flag=$(cat /home/fxmss/tmp/fxmss_database/full_update_flag.txt)
+	
+fi  
+
+if [ ! -f /home/fxmss/tmp/fxmss_database/start_Revision.txt ];then
+    debug "/home/fxmss/tmp/fxmss_database/start_Revision.txt does not exist!"
+    exit 1
+else
+    start_Revision=$(cat /home/fxmss/tmp/fxmss_database/start_Revision.txt)
+	
+fi 
+
+if [ ! -f /home/fxmss/tmp/fxmss_database/end_Revision.txt ];then
+    debug "/home/fxmss/tmp/fxmss_database/end_Revision.txt does not exist!"
+    exit 1
+else
+    end_Revision=$(cat /home/fxmss/tmp/fxmss_database/end_Revision.txt)
+	
+fi 
+
+if [ ! -f /home/fxmss/tmp/fxmss_database/FXMSS_V${VERSION_NEW}.${full_update_flag}-${start_Revision}-${end_Revision}.db.tgz ];then
+    debug "/home/fxmss/tmp/fxmss_database/FXMSS_V${VERSION_NEW}.db.tgz does not exist!"
+    exit 1
+else
+    cd /home/fxmss/tmp/fxmss_database/
+	if [ -d /home/fxmss/tmp/fxmss_database/${VERSION_NEW}/ ];then
+	   debug "/home/fxmss/tmp/fxmss_database/ current \"${VERSION_NEW}\" Directory.So need delete it."
+	   debug "";
+	   rm -rf ${VERSION_NEW}
+	fi
+    tar zxf FXMSS_V${VERSION_NEW}.${full_update_flag}-${start_Revision}-${end_Revision}.db.tgz
+	#rm -rf full_update_flag.txt start_Revision.txt end_Revision.txt
+fi
+
+cd /home/fxmss/tmp/fxmss_database/${VERSION_NEW}/
+cp /home/fxmss/scripts/rebuild_update.sql ./
+
+#开始检查需要更新的表,索引等是否已经被创建
+find -type f |sort -n > ${VERSION_NEW}tmp.txt
+f_dorollbacksequence()
+{
+S_sequence_list=`cat ${VERSION_NEW}tmp.txt|grep -w "03-sequence"`
+if [ -n "${S_sequence_list}" ];then
+   debug "current exists sequence update.so need check it on current database."
+   for sql in ${S_sequence_list}
+     do
+        #echo `cat ${sql}|grep -iw CREATE|grep -iw SEQUENCE|awk '{print $NF}'|tr '[a-z]' '[A-Z]'|sed "s/[[:space:]]//g"|sed "s/FXMSS.//g"|awk '{print "drop SEQUENCE "$0";"}'` >> ${S_version}/01_FXMSS/rollback-01_FXMSS.sql
+        S_sequence_name=`echo "${sql}"|awk -F "/" '{print $NF}'|awk -F "." '{print $1}'|tr '[a-z]' '[A-Z]'|sed "s/[[:space:]]//g"|sed "s/FXMSS.//g"`
+        S_sequence_name_check=`cat ${sql}|tr '[a-z]' '[A-Z]'|grep -w "${S_sequence_name}"`
+        if [ -n "${S_sequence_name_check}" ];then
+           S_sequence_name_exists_check=`sqlplus -S fxmss/fxmss@fxmss<<EOF
+set heading off;
+set feedback off;
+set echo off;
+col value format 99999999999999999
+select COUNT(*) from user_objects where OBJECT_TYPE = 'SEQUENCE' and OBJECT_NAME='${S_sequence_name}';
+quit
+EOF`
+           S_sequence_name_exists_check=`echo ${S_sequence_name_exists_check}|sed 's/ //g'`
+           if [ x"${S_sequence_name_exists_check}" != x"0" ];then
+               debug "current database exists ${S_sequence_name}.so need drop and create."
+               sqlplus -S fxmss/fxmss@fxmss  <<EOF
+                        spool /home/fxmss/scripts/log/fxmss_db_upgrade.log append
+                        prompt ------Start drop SEQUENCE ${S_sequence_name};
+                        drop SEQUENCE ${S_sequence_name};
+                        prompt ------End drop SEQUENCE ${S_sequence_name};
+                        prompt
+                        spool off;
+                        quit;
+EOF
+           else
+               debug "current database not exists ${S_sequence_name}.so only create."
+           fi
+        else
+           debug "ERROR:${sql} files The name of the file does not match the name in the file content."
+		   exit 1
+        fi
+     done
+fi
+}
+
+f_dorollbacktable()
+{
+S_table_list=`cat ${VERSION_NEW}tmp.txt|grep -w "05-table"`
+if [ -n "${S_table_list}" ];then
+   debug "current exists table update.so need check it on current database."
+   for sql in ${S_table_list}
+     do
+        #echo `cat ${sql}|grep -iw create|grep -iw table|awk '{print $NF}'|tr '[a-z]' '[A-Z]'|sed "s/(//g"|sed "s/[[:space:]]//g"|sed "s/FXMSS.//g"|awk '{print "drop table "$0" cascade constraints;"}'` >> ${S_version}/01_FXMSS/rollback-01_FXMSS.sql
+        S_table_name=`echo "${sql}"|awk -F "/" '{print $NF}'|awk -F "." '{print $1}'|tr '[a-z]' '[A-Z]'|sed "s/[[:space:]]//g"|sed "s/FXMSS.//g"`
+        S_table_name_check=`cat ${sql}|tr '[a-z]' '[A-Z]'|grep -w "${S_table_name}"`
+        if [ -n "${S_table_name_check}" ];then
+           S_table_name_exists_check=`sqlplus -S fxmss/fxmss@fxmss<<EOF
+set heading off;
+set feedback off;
+set echo off;
+col value format 99999999999999999
+select COUNT(*) from user_objects where OBJECT_TYPE = 'TABLE' and OBJECT_NAME='${S_table_name}';
+quit
+EOF`
+           S_table_name_exists_check=`echo ${S_table_name_exists_check}|sed 's/ //g'`
+           if [ x"${S_table_name_exists_check}" != x"0" ];then
+              debug "current database exists ${S_table_name}.so need drop and create."
+              sqlplus -S fxmss/fxmss@fxmss  <<EOF
+                       spool /home/fxmss/scripts/log/fxmss_db_upgrade.log append
+                       prompt ------Start drop TABLE ${S_table_name};
+                       drop TABLE ${S_table_name};
+                       prompt ------End drop TABLE ${S_table_name};
+                       prompt
+                       spool off;
+                       quit;
+EOF
+           else
+              debug "current database not exists ${S_table_name}.so only create."
+           fi
+        else
+           debug "ERROR:${sql} files The name of the file does not match the name in the file content."
+		   exit 1
+        fi
+     done
+fi
+}
+
+f_dorollbackpk()
+{
+S_pk_list=`cat ${VERSION_NEW}tmp.txt|grep -w "07-pk"`
+if [ -n "${S_pk_list}" ];then
+   echo "current exists pk update.so need rollback it."
+   for sql in ${S_pk_list}
+     do
+        #echo `cat ${sql}|grep -iw alter|grep -iw table|awk '{print $3}'|sed "s/[[:space:]]//g"|sed "s/FXMSS.//g"|awk '{print "ALTER TABLE "$1" DROP PRIMARY KEY CASCADE;"}'` >> ${S_version}/01_FXMSS/rollback-01_FXMSS.sql
+        S_pk_name=`echo "${sql}"|awk -F "/" '{print $NF}'|awk -F "." '{print $1}'|tr '[a-z]' '[A-Z]'|sed "s/[[:space:]]//g"|sed "s/FXMSS.//g"`
+        S_pk_table_name=`echo "${sql}"|awk -F "/" '{print $NF}'|awk -F "." '{print $1}'|tr '[a-z]' '[A-Z]'|sed "s/[[:space:]]//g"|sed "s/FXMSS.//g"|sed "s/PK_//g"`
+        S_pk_name_check=`cat ${sql}|tr '[a-z]' '[A-Z]'|grep -w "${S_pk_name}"`
+        if [ -n "${S_pk_name_check}" ];then
+           S_pk_name_exists_check=`sqlplus -S fxmss/fxmss@fxmss<<EOF
+set heading off;
+set feedback off;
+set echo off;
+col value format 99999999999999999
+SELECT count(*) from user_constraints where CONSTRAINT_NAME = '${S_pk_name}';
+quit
+EOF`       
+           S_pk_name_exists_check=`echo ${S_pk_name_exists_check}|sed 's/ //g'`
+           if [ x"${S_pk_name_exists_check}" != x"0" ];then
+               debug "current database exists ${S_pk_name}.so need drop and create."
+               sqlplus -S fxmss/fxmss@fxmss  <<EOF
+               spool /home/fxmss/scripts/log/fxmss_db_upgrade.log append
+               prompt ------Start ALTER TABLE ${S_pk_table_name} DROP PRIMARY KEY CASCADE;
+               ALTER TABLE ${S_pk_table_name} DROP PRIMARY KEY CASCADE;
+               prompt ------End ALTER TABLE ${S_pk_table_name} DROP PRIMARY KEY CASCADE;
+               prompt
+               spool off;
+               quit;
+EOF
+           else
+               debug "current database not exists ${S_pk_name}.so only create."
+           fi 
+        else
+           debug "ERROR:${sql} files The name of the file does not match the name in the file content."
+		   exit 1
+        fi
+     done
+fi
+}
+
+f_dorollbackindex()
+{
+S_index_list=`cat ${VERSION_NEW}tmp.txt|grep -w "09-index"`
+if [ -n "${S_index_list}" ];then
+   echo "current exists index update.so need rollback it."
+   for sql in ${S_index_list}
+     do
+        #echo `cat ${sql}|grep -iw create|grep -iw index|tr '[a-z]' '[A-Z]'|sed "s/FXMSS.//g"|awk '{if ($2 == "INDEX") {print "drop "$2" "$3";"} else if ($2 == "BITMAP"){print "drop "$3" "$4";"} else {print "this no defined DDL sql file"}}'` >> ${S_version}/01_FXMSS/rollback-01_FXMSS.sql
+        S_index_name=`echo "${sql}"|awk -F "/" '{print $NF}'|awk -F "." '{print $1}'|tr '[a-z]' '[A-Z]'|sed "s/[[:space:]]//g"|sed "s/FXMSS.//g"`
+        S_index_name_check=`cat ${sql}|tr '[a-z]' '[A-Z]'|grep -w "${S_index_name}"`
+        if [ -n "${S_index_name_check}" ];then
+           S_index_name_exists_check=`sqlplus -S fxmss/fxmss@fxmss<<EOF
+set heading off;
+set feedback off;
+set echo off;
+col value format 99999999999999999
+select count(*) from user_indexes where INDEX_NAME = '${S_index_name}';
+quit
+EOF`
+           S_index_name_exists_check=`echo ${S_index_name_exists_check}|sed 's/ //g'`
+           if [ x"${S_index_name_exists_check}" != x"0" ];then
+              debug "current database exists ${S_index_name}.so need drop and create."
+              sqlplus -S fxmss/fxmss@fxmss  <<EOF
+              spool /home/fxmss/scripts/log/fxmss_db_upgrade.log append
+              prompt ------Start drop INDEX ${S_index_name};
+              drop INDEX ${S_index_name};
+              prompt ------End drop INDEX ${S_index_name};
+              prompt
+              spool off;
+              quit;
+EOF
+           else
+              debug "current database not exists ${S_index_name}.so only create."
+           fi
+        else
+           debug "ERROR:${sql} files The name of the file does not match the name in the file content."
+		   exit 1
+        fi
+     done
+fi
+}
+
+f_dorollbackjob()
+{
+S_job_list=`cat ${VERSION_NEW}tmp.txt|grep -w "14_job"`
+if [ -n "${S_job_list}" ];then
+   echo "current exists job update.so need rollback it."
+   for sql in ${S_job_list}
+     do   
+       #S_jobwhatinfo=`cat ${sql}|grep -iw what|awk -F "=>" '{print $2}'|awk -F "(" '{print $1}'|sed -e "s/'//g" -e "s/[[:space:]]//g"`
+       S_jobwhatinfo=`echo "${sql}"|awk -F "/" '{print $NF}'|awk -F "." '{print $1}'|tr '[a-z]' '[A-Z]'|sed "s/[[:space:]]//g"|sed "s/FXMSS.//g"`
+       S_jobwhatinfo_check=`cat ${sql}|tr '[a-z]' '[A-Z]'|grep -w "${S_jobwhatinfo}"`
+       if [ -n "${S_jobwhatinfo_check}" ];then
+          S_jobwhatinfo_exists_check=`sqlplus -S fxmss/fxmss@fxmss<<EOF
+set heading off;
+set feedback off;
+set echo off;
+col value format 99999999999999999
+SELECT count(*) FROM user_jobs WHERE what like '${S_jobwhatinfo}%';
+quit
+EOF`
+             S_jobwhatinfo_exists_check=`echo ${S_jobwhatinfo_exists_check}|sed 's/ //g'`
+             if [ x"${S_jobwhatinfo_exists_check}" != x"0" ];then
+                debug "current database exists ${S_jobwhatinfo} job.so need drop and create."
+                sqlplus -S fxmss/fxmss@fxmss  <<EOF
+                spool /home/fxmss/scripts/log/fxmss_db_upgrade.log append
+                prompt ------Start drop job ${S_jobwhatinfo};
+BEGIN
+   FOR v IN (SELECT job
+               FROM user_jobs
+              WHERE what like '${S_jobwhatinfo}%')
+   LOOP
+      DBMS_JOB.remove (v.job);
+   END LOOP;
+
+   COMMIT;
+END;
+/
+                prompt ------End drop job ${S_jobwhatinfo};
+                prompt
+                spool off;
+EOF
+             else
+                debug "current database not exists ${S_jobwhatinfo} job.so only create."
+             fi
+       else
+          debug "ERROR:${sql} files The name of the file does not match the name in the file content."
+		  exit 1
+       fi
+     done
+fi
+}
+
+f_dorollbacksequence
+f_dorollbacktable
+f_dorollbackpk
+f_dorollbackindex
+f_dorollbackjob
+#结束检查需要更新的表,索引等是否已经被创建
+fileList=`ls -l | grep '^d'|awk '{print $NF}'`
+for i in $fileList
+do 
+case $i in 
+        01_FXMSS)
+		    debug "Begin to update FXMSS data from FXMSS, please waiting ..."
+			sqlplus fxmss/fxmss@fxmss  <<EOF
+			spool /home/fxmss/scripts/log/fxmss_db_upgrade.log append
+			prompt
+			prompt ------SET SQLBLANKLINES ON;
+			SET SQLBLANKLINES ON
+			prompt ------Start Running @./01_FXMSS/build-01_FXMSS.sql;
+			@./01_FXMSS/build-01_FXMSS.sql;
+			prompt ------Finish Running @./01_FXMSS/build-01_FXMSS.sql;
+			prompt
+			prompt
+			prompt ------Start Running ./rebuild_update.sql;
+			@./rebuild_update.sql;
+			prompt ------Finish Running ./rebuild_update.sql;
+			prompt
+			spool off;
+EOF
+			#cat /home/fxmss/scripts/log/fxmss_update.log >> /home/fxmss/scripts/log/update_all.log;
+			#rm -f /home/fxmss/scripts/log/fxmss_update.log;
+			debug "End to update FXMSS data from FXMSS, please continue ..."
+			;;
+		*)
+			;;
+esac
+done
+debug ""
+
+#开始检查是否存在编译失败的对象
+S_compile_error_count=`sqlplus -S fxmss/fxmss@fxmss <<EOF
+set heading off verify off echo off feedback off pagesize 0
+SELECT COUNT (*)
+ FROM user_objects
+ WHERE object_type IN ('PROCEDURE','FUNCTION','TRIGGER','VIEW','PACKAGE','PACKAGE BODY','JAVA SOURCE','JAVA CLASS')
+       AND status = 'INVALID';
+exit;
+EOF`
+if [ `echo ${S_compile_error_count} | sed 's/ //g'` = 0 ];then
+   debug "compile database object is successfuly."
+else
+   debug "compile database object is failed."
+   S_compile_error_object=`sqlplus -S fxmss/fxmss@fxmss <<EOF
+   set heading off verify off echo off feedback off pagesize 0
+   spool S_compile_error_object.txt
+   SELECT 'alter '||object_type||' '||object_name||' compile;'
+     FROM user_objects
+     WHERE status = 'INVALID'
+           AND object_type in ('FUNCTION','JAVA SOURCE','JAVA CLASS','PROCEDURE','PACKAGE','TRIGGER','VIEW')
+   union all       
+   SELECT 'alter package '||object_name||' compile body;'
+     FROM user_objects
+     WHERE status = 'INVALID'
+           AND object_type = 'PACKAGE BODY';
+   spool off;
+   exit;
+EOF`
+   while read line
+     do
+       debug "Compile failed is \"$line\""
+     done < S_compile_error_object.txt
+     rm -rf S_compile_error_object.txt
+fi
+#结束检查是否存在编译失败的对象
+cd /home/fxmss/tmp/fxmss_database/
+rm -rf $VERSION_NEW
+
+debug "";
+debug "`date '+%Y-%m-%d %H:%M:%S'` Task End--Update.";
+debug "INFO: --Database Update terminated successfully."
+

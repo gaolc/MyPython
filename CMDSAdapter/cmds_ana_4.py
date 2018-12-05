@@ -1,0 +1,117 @@
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+import time
+import logging
+import logging.config
+import os
+import sys
+import platform
+
+#声明全局变量
+MAX_LINE_NUM=0
+def check_dir ():
+    result_path='./result'
+    log_path='./log'
+    if not os.path.exists(result_path):
+	    os.makedirs(result_path)
+    if not os.path.exists(log_path):
+	    os.makedirs(log_path)
+#初始化日志系统
+logging.config.fileConfig('config/config.ini')
+logger = logging.getLogger("simplelog")
+def init():
+    if os.path.isfile(r'result/CMDS_analysis.csv'):
+        logger.info("found 'result/CMDS_analysis.csv' file, will delete it")
+        os.remove(r'result/CMDS_analysis.csv')   
+def getMaxlLineNum(filepath):
+    global MAX_LINE_NUM
+    if platform.system() == 'Linux':
+        # sample ['152234  a.log ']
+        r = os.popen('wc -l ' + filepath).readlines()
+        # sample 152234
+        MAX_LINE_NUM = int(r[0].split(" ")[0])
+    elif platform.system()=='Windows':
+        with open(filepath) as f:
+            text=f.read()
+        MAX_LINE_NUM = len(text.splitlines())
+    else:
+        MAX_LINE_NUM = 445118
+    return MAX_LINE_NUM
+
+class CMDSAdapterLogParse():
+    def __init__(self, data_file):
+        self.data_file = data_file
+    def ana_log (self,callback=object):
+        self.curr_line_num = 0
+        trigger_bar_update = MAX_LINE_NUM/70
+        t1=int(time.time())
+        write_file_open=open('./result/CMDS_analysis.csv','a')
+        write_file_open.write('Symbol,Best Rate Date,Best Rate Time,Best Bid Rate,Best Ask Rate\n')
+        with open(self.data_file) as file:
+            for line in file:
+                self.curr_line_num += 1
+                if line[78:89] == r'sendSymbol:':
+                    data_l = line[90:len(line)-2]
+                    Line_list=data_l.split(', ')
+                    dic_={'-1':'','875':'','1010':'','22':'','25':''}
+                    for i in Line_list:
+                        n=i.find('=')
+                        dic_[i[0:n]]=i[n+1:]
+                    print_patter='%s,%s,%s,%s,%s,\n'%(dic_['-1'],dic_['875'],dic_['1010'],dic_['22'],dic_['25'])
+                    write_file_open.write(print_patter)                     
+                if self.curr_line_num % trigger_bar_update == 0 or self.curr_line_num == MAX_LINE_NUM:
+                    callback(current_step=self.curr_line_num)
+			
+        write_file_open.close()
+        t2=int(time.time())
+        t2_t1=t2-t1
+        logger.info("This all time spent %d seconds!"%t2_t1 +' '*21)
+
+class ProgressBar():
+    #"""
+    #显示处理进度的类
+    #调用该类相关函数即可实现处理进度的显示
+    #"""
+    max_arrow = 70
+    # 初始化函数，需要知道总共的处理次数
+    def __init__(self, max_step):
+        self.max_step = max_step
+        self.current_step = 1
+
+    # 显示函数，根据当前的处理进度i显示进度
+    # 效果为[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>]100.00%
+    def updateBar(self, current_step=None):
+        if current_step is not None:
+            self.current_step = current_step
+        num_arrow = int(self.current_step * self.max_arrow / self.max_step)  # 计算显示多少个'>'
+        num_line = self.max_arrow - num_arrow  # 计算显示多少个'-'
+        percent = self.current_step * 100.0 / self.max_step  # 计算完成进度，格式为xx.xx%
+        progress_bar = '[' + '>' * num_arrow + '-' * num_line + ']' + '%.2f' % percent + '%' + '\r'
+        progress_bar_r = '[' + '>' * num_arrow + '-' * num_line + ']' + '%.2f' % percent + '%' +'\n'
+        if  current_step<self.max_step:
+            sys.stdout.write(progress_bar)
+        else:
+            logger.debug(progress_bar)
+            sys.stdout.write(progress_bar_r)
+            self.close()
+        sys.stdout.flush()
+    def close(self):
+        logger.info("Done, result file has been generated at ./result/CMDS_analysis.csv")
+
+if __name__=="__main__":
+    logger.info("#"*50)
+    logger.info("This program is running ...")
+    logger.info("OS is %s" % platform.system())
+    logger.info("Python Version is %s" % platform.python_version())
+    check_dir ()
+    init()
+    files = [r'data/' + i for i in os.listdir('data') if  os.path.isfile(r'data/' + i) and os.path.splitext(i)[0][:11] == 'CMDSAdapter']
+    logger.info('This time has %s files!'%files)
+    for data in sorted(files,reverse=True):
+        logger.info('Starting parse [%s]...'%data)
+        getMaxlLineNum(data)
+        logger.info("[%s] max line num: %s" % (data,MAX_LINE_NUM))
+        barObj = ProgressBar(MAX_LINE_NUM)
+        logObj = CMDSAdapterLogParse(data)
+        logObj.ana_log (callback=barObj.updateBar) 
+    logger.info("End ,thanks !")

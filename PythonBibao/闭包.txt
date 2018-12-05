@@ -1,0 +1,77 @@
+1.闭包的概念
+在一些语言中，在函数中可以（嵌套）定义另一个函数时，如果内部的函数引用了外部的函数的变量，则可能产生闭包。闭包可以用来在一个函数与一组“私有”变量之间创建关联，这些私有变量能够保持其持久性
+通俗来讲当某个函数被当成对象返回时，夹带了外部变量，就形成了一个闭包。
+
+#!/usr/bin/python
+# -*- coding:utf_8 -*-
+
+def make_printer(msg):
+    def printer():
+        print msg     #夹带私货(外部变量)
+    return printer     #返回的是函数，带私货的函数
+printer=make_printer("Foo!")
+printer()
+
+2.如何理解闭包
+闭包存在的意义就是它夹带了外部变量（私货），如果不夹带私货，他和普通的函数就没有任何区别了，同一个函数夹带不通的私货，就实现了不同的功能。
+
+#!/usr/bin/python 
+# -*- coding:utf-8 -*-
+
+def tag(tag_name):
+    def add_tag(content):
+        return "<{0}>{1}</{0}>".format(tag_name,content)
+    return add_tag
+
+_name='Hello'
+addtag=tag('a')
+print addtag(_name)
+#<a>Hello</a>
+
+content='World'
+add_tag=tag('b')
+print add_tag(content)
+#<b>World</b>
+#add_tag就是一个函数，他需要tag_nane和content两个参数，只不过tag_name这个参数是打包带走的。
+
+
+3.何时使用闭包
+比如Python中的装饰器Decorator，假如你要写一个带参数的装饰器，那么一般都会产生闭包
+#how to define
+def wrapper(func1):     #必须必须接受一个且仅一个函数作为参数
+    return               #返回一个且仅一个callable对象，一般为函数
+
+#how to use
+def target_func(args):    #目标函数
+    pass
+
+#调用方法一，直接包裹
+result=wrapper(target_func)(args)
+#调用方法二，使用@语法，等同于方式一
+@wrapper
+def target_func(args):
+    pass
+result=target_func()
+
+
+#!/usr/bin/python
+# -*- coding:utf-8 -*-
+
+def html_tags(tag_name):
+    def wrapper_(func):
+        def wrapper(*args,**kwargs):
+            content=func(*args,**kwargs)
+            return "<{tag}>{content}</{tag}>".format(tag=tag_name,content=content)
+        return wrapper
+    return wrapper_
+
+@html_tags('b')
+def hello(name='Toby'):
+    return "Hello {0}!".format(name)
+	
+print hello()
+print hello("World")
+
+h=html_tags('h')(hello)
+print h
+print h('erchen')
