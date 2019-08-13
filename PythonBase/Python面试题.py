@@ -341,4 +341,5 @@ len(list(product(['a','b','c'],['d','e','f'],['m','n'])))
 
 
 
-'int:10 ; hex:a ; oct:12 ; bin:1010'
+
+
