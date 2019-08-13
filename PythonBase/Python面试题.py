@@ -325,4 +325,20 @@ len(list(product(['a','b','c'],['d','e','f'],['m','n'])))
 >>> list(enumerate(items))
 [(0, 'zero'), (1, 'one'), (2, 'two'), (3, 'three')]
 
+#format 进制转换
+#10进制转换为其他进制
+>>> "int:{0:d} ; hex:{0:x} ; oct:{0:o} ; bin:{0:b}".format(10)
+#16进制转换为其他进制
+>>> "int:{0:d} ; hex:{0:x} ; oct:{0:o} ; bin:{0:b}".format(0xa,'x')
+'int:10 ; hex:a ; oct:12 ; bin:1010'
+#8进制转换为其他进制
+>>> "int:{0:d} ; hex:{0:x} ; oct:{0:o} ; bin:{0:b}".format(0o12,'o')
+'int:10 ; hex:a ; oct:12 ; bin:1010'
+#2进制转换为其他进制
+>>> "int:{0:d} ; hex:{0:x} ; oct:{0:o} ; bin:{0:b}".format(0b1010,'b')
+'int:10 ; hex:a ; oct:12 ; bin:1010
 
+
+
+
+'int:10 ; hex:a ; oct:12 ; bin:1010'
